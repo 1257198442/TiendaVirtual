@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TiendaModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="TiendaModelStoreContainer">
+    <EntitySet Name="Productoes" EntityType="TiendaModel.Store.Productoes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Stocks" EntityType="TiendaModel.Store.Stocks" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Compras" EntityType="TiendaModel.Store.Compras" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Pedidoes" EntityType="TiendaModel.Store.Pedidoes" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="CompraProducto" Association="TiendaModel.Store.CompraProducto">
+      <End Role="Compra" EntitySet="Compras" />
+      <End Role="Producto" EntitySet="Productoes" />
+    </AssociationSet>
+    <AssociationSet Name="StockProducto" Association="TiendaModel.Store.StockProducto">
+      <End Role="Stock" EntitySet="Stocks" />
+      <End Role="Producto" EntitySet="Productoes" />
+    </AssociationSet>
+    <AssociationSet Name="CompraPedido" Association="TiendaModel.Store.CompraPedido">
+      <End Role="Compra" EntitySet="Compras" />
+      <End Role="Pedido" EntitySet="Pedidoes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Productoes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="price" Type="float" Nullable="false" />
+    <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="image" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Stocks">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="stockQuantity" Type="int" Nullable="false" />
+    <Property Name="Producto_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Compras">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="compradoQuantity" Type="bigint" Nullable="false" />
+    <Property Name="ProductoId" Type="int" Nullable="false" />
+    <Property Name="amount" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Pedidoes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="time" Type="datetime" Nullable="false" />
+    <Property Name="CompraId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="CompraProducto">
+    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="*" />
+    <End Role="Producto" Type="TiendaModel.Store.Productoes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Compra">
+        <PropertyRef Name="ProductoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StockProducto">
+    <End Role="Stock" Type="TiendaModel.Store.Stocks" Multiplicity="*" />
+    <End Role="Producto" Type="TiendaModel.Store.Productoes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Stock">
+        <PropertyRef Name="Producto_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CompraPedido">
+    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="1" />
+    <End Role="Pedido" Type="TiendaModel.Store.Pedidoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compra">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="CompraId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TiendaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TiendaEntities1" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Productoes" EntityType="TiendaModel.Producto" />
+          <EntitySet Name="Stocks" EntityType="TiendaModel.Stock" />
+          <EntitySet Name="Compras" EntityType="TiendaModel.Compra" />
+          <EntitySet Name="Pedidoes" EntityType="TiendaModel.Pedido" />
+          <AssociationSet Name="StockProducto" Association="TiendaModel.StockProducto">
+            <End Role="Stock" EntitySet="Stocks" />
+            <End Role="Producto" EntitySet="Productoes" />
+          </AssociationSet>
+          <AssociationSet Name="CompraPedido" Association="TiendaModel.CompraPedido">
+            <End Role="Compra" EntitySet="Compras" />
+            <End Role="Pedido" EntitySet="Pedidoes" />
+          </AssociationSet>
+          <AssociationSet Name="ProductoCompra" Association="TiendaModel.ProductoCompra">
+            <End Role="Producto" EntitySet="Productoes" />
+            <End Role="Compra" EntitySet="Compras" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" />
+          <Property Name="image" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="stockQuantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Producto" Relationship="TiendaModel.StockProducto" FromRole="Stock" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Compra">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="compradoQuantity" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Pedidoes" Relationship="TiendaModel.CompraPedido" FromRole="Compra" ToRole="Pedido" />
+          <NavigationProperty Name="Producto" Relationship="TiendaModel.ProductoCompra" FromRole="Compra" ToRole="Producto" />
+          <Property Name="ProductoId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pedido">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="amount" Type="String" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Compra" Relationship="TiendaModel.CompraPedido" FromRole="Pedido" ToRole="Compra" />
+          <Property Name="CompraId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="StockProducto">
+          <End Type="TiendaModel.Stock" Role="Stock" Multiplicity="1" />
+          <End Type="TiendaModel.Producto" Role="Producto" Multiplicity="1" />
+        </Association>
+        <Association Name="CompraPedido">
+          <End Type="TiendaModel.Compra" Role="Compra" Multiplicity="1" />
+          <End Type="TiendaModel.Pedido" Role="Pedido" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Compra">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Pedido">
+              <PropertyRef Name="CompraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductoCompra">
+          <End Type="TiendaModel.Producto" Role="Producto" Multiplicity="1" />
+          <End Type="TiendaModel.Compra" Role="Compra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Compra">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TiendaModelStoreContainer" CdmEntityContainer="TiendaEntities1">
+    <EntitySetMapping Name="Productoes">
+      <EntityTypeMapping TypeName="IsTypeOf(TiendaModel.Producto)">
+        <MappingFragment StoreEntitySet="Productoes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="image" ColumnName="image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Stocks">
+      <EntityTypeMapping TypeName="IsTypeOf(TiendaModel.Stock)">
+        <MappingFragment StoreEntitySet="Stocks">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="stockQuantity" ColumnName="stockQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Compras">
+      <EntityTypeMapping TypeName="IsTypeOf(TiendaModel.Compra)">
+        <MappingFragment StoreEntitySet="Compras">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="compradoQuantity" ColumnName="compradoQuantity" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pedidoes">
+      <EntityTypeMapping TypeName="IsTypeOf(TiendaModel.Pedido)">
+        <MappingFragment StoreEntitySet="Pedidoes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="time" ColumnName="time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="StockProducto" TypeName="TiendaModel.StockProducto" StoreEntitySet="Stocks">
+      <EndProperty Name="Producto">
+        <ScalarProperty Name="Id" ColumnName="Producto_Id" />
+      </EndProperty>
+      <EndProperty Name="Stock">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
