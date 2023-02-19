@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 02/19/2023 13:23:32
+-- Date Created: 02/19/2023 17:44:57
 -- Generated from EDMX file: D:\Porject\project de C#\Practica2\TiendaVirtual\Model1.edmx
 -- --------------------------------------------------
 
@@ -17,9 +17,6 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_CompraPedido]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Pedidoes] DROP CONSTRAINT [FK_CompraPedido];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ProductoCompra]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Compras] DROP CONSTRAINT [FK_ProductoCompra];
 GO
@@ -69,7 +66,7 @@ GO
 -- Creating table 'Compras'
 CREATE TABLE [dbo].[Compras] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [compradoQuantity] bigint  NOT NULL,
+    [compradoQuantity] int  NOT NULL,
     [compradoProductoAmount] float  NOT NULL,
     [ProductoId] int  NOT NULL
 );
@@ -78,9 +75,8 @@ GO
 -- Creating table 'Pedidoes'
 CREATE TABLE [dbo].[Pedidoes] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [amount] nvarchar(max)  NOT NULL,
-    [time] datetime  NOT NULL,
-    [CompraId] int  NOT NULL
+    [amount] float  NOT NULL,
+    [time] datetime  NOT NULL
 );
 GO
 
@@ -115,21 +111,6 @@ GO
 -- --------------------------------------------------
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- Creating foreign key on [CompraId] in table 'Pedidoes'
-ALTER TABLE [dbo].[Pedidoes]
-ADD CONSTRAINT [FK_CompraPedido]
-    FOREIGN KEY ([CompraId])
-    REFERENCES [dbo].[Compras]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CompraPedido'
-CREATE INDEX [IX_FK_CompraPedido]
-ON [dbo].[Pedidoes]
-    ([CompraId]);
-GO
 
 -- Creating foreign key on [ProductoId] in table 'Compras'
 ALTER TABLE [dbo].[Compras]

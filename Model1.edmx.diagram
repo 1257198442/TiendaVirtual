@@ -7,9 +7,8 @@
       <Diagram DiagramId="28e03933a9094751b523465f11c5595e" Name="Diagram1" >
         <EntityTypeShape EntityType="TiendaModel.Producto" Width="1.5" PointX="0.5" PointY="2.375" />
         <EntityTypeShape EntityType="TiendaModel.Stock" Width="1.5" PointX="2.875" PointY="1.125" />
-        <EntityTypeShape EntityType="TiendaModel.Compra" Width="1.5" PointX="2.875" PointY="3.5" />
-        <EntityTypeShape EntityType="TiendaModel.Pedido" Width="1.5" PointX="5.125" PointY="3.5" IsExpanded="true" />
-        <AssociationConnector Association="TiendaModel.CompraPedido" />
+        <EntityTypeShape EntityType="TiendaModel.Compra" Width="1.5" PointX="2.875" PointY="3.25" />
+        <EntityTypeShape EntityType="TiendaModel.Pedido" Width="1.5" PointX="5.375" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="TiendaModel.ProductoCompra" />
         <AssociationConnector Association="TiendaModel.StockProducto" />
       </Diagram>

@@ -10,10 +10,6 @@
     <EntitySet Name="Stocks" EntityType="TiendaModel.Store.Stocks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Compras" EntityType="TiendaModel.Store.Compras" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Pedidoes" EntityType="TiendaModel.Store.Pedidoes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="CompraPedido" Association="TiendaModel.Store.CompraPedido">
-      <End Role="Compra" EntitySet="Compras" />
-      <End Role="Pedido" EntitySet="Pedidoes" />
-    </AssociationSet>
     <AssociationSet Name="ProductoCompra" Association="TiendaModel.Store.ProductoCompra">
       <End Role="Producto" EntitySet="Productoes" />
       <End Role="Compra" EntitySet="Compras" />
@@ -46,7 +42,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="compradoQuantity" Type="bigint" Nullable="false" />
+    <Property Name="compradoQuantity" Type="int" Nullable="false" />
     <Property Name="compradoProductoAmount" Type="float" Nullable="false" />
     <Property Name="ProductoId" Type="int" Nullable="false" />
   </EntityType>
@@ -55,22 +51,9 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="amount" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="amount" Type="float" Nullable="false" />
     <Property Name="time" Type="datetime" Nullable="false" />
-    <Property Name="CompraId" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="CompraPedido">
-    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="1" />
-    <End Role="Pedido" Type="TiendaModel.Store.Pedidoes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Compra">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Pedido">
-        <PropertyRef Name="CompraId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ProductoCompra">
     <End Role="Producto" Type="TiendaModel.Store.Productoes" Multiplicity="1" />
     <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="*" />
@@ -104,10 +87,6 @@
           <EntitySet Name="Stocks" EntityType="TiendaModel.Stock" />
           <EntitySet Name="Compras" EntityType="TiendaModel.Compra" />
           <EntitySet Name="Pedidoes" EntityType="TiendaModel.Pedido" />
-          <AssociationSet Name="CompraPedido" Association="TiendaModel.CompraPedido">
-            <End Role="Compra" EntitySet="Compras" />
-            <End Role="Pedido" EntitySet="Pedidoes" />
-          </AssociationSet>
           <AssociationSet Name="ProductoCompra" Association="TiendaModel.ProductoCompra">
             <End EntitySet="Productoes" Role="Producto" />
             <End EntitySet="Compras" Role="Compra" />
@@ -141,8 +120,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="compradoQuantity" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Pedidoes" Relationship="TiendaModel.CompraPedido" FromRole="Compra" ToRole="Pedido" />
+          <Property Name="compradoQuantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Producto" Relationship="TiendaModel.ProductoCompra" FromRole="Compra" ToRole="Producto" />
           <Property Name="compradoProductoAmount" Type="Double" Nullable="false" />
           <Property Name="ProductoId" Type="Int32" Nullable="false" />
@@ -152,23 +130,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="amount" Type="String" Nullable="false" />
+          <Property Name="amount" Type="Double" Nullable="false" />
           <Property Name="time" Type="DateTime" Nullable="false" />
-          <NavigationProperty Name="Compra" Relationship="TiendaModel.CompraPedido" FromRole="Pedido" ToRole="Compra" />
-          <Property Name="CompraId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="CompraPedido">
-          <End Type="TiendaModel.Compra" Role="Compra" Multiplicity="1" />
-          <End Type="TiendaModel.Pedido" Role="Pedido" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Compra">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Pedido">
-              <PropertyRef Name="CompraId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ProductoCompra">
           <End Type="TiendaModel.Producto" Multiplicity="1" Role="Producto" />
           <End Type="TiendaModel.Compra" Multiplicity="*" Role="Compra" />
@@ -226,7 +190,6 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="amount" ColumnName="amount" />
           <ScalarProperty Name="time" ColumnName="time" />
-          <ScalarProperty Name="CompraId" ColumnName="CompraId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

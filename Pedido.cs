@@ -15,10 +15,7 @@ namespace TiendaVirtual
     public partial class Pedido
     {
         public int Id { get; set; }
-        public string amount { get; set; }
+        public double amount { get; set; }
         public System.DateTime time { get; set; }
-        public int CompraId { get; set; }
-    
-        public virtual Compra Compra { get; set; }
     }
 }

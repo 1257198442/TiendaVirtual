@@ -21,13 +21,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
                     <li>@Html.ActionLink("Producto", "Index", "Productoes")</li>
                     <li>@Html.ActionLink("Stock", "Index", "Stocks")</li>
                     <li>@Html.ActionLink("Compra", "Index", "Compras")</li>
                     <li>@Html.ActionLink("Pedido", "Index", "Pedidoes")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -36,7 +36,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 应用程序</p>
+            <p>&copy; @DateTime.Now.Year - TiendaVirtual</p>
         </footer>
     </div>
 

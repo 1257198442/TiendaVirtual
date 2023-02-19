@@ -65,6 +65,10 @@ namespace TiendaVirtual.Controllers
             {
                 var compra = db.Compras.Where(item => item.ProductoId == productoId).ToList()[0];
                 compra.compradoQuantity = compra.compradoQuantity+1;
+                if (compra.compradoQuantity > db.Productoes.Find(compra.ProductoId).Stock.stockQuantity)
+                {
+                    compra.compradoQuantity = db.Productoes.Find(compra.ProductoId).Stock.stockQuantity;
+                }
                 compra.compradoProductoAmount = compra.compradoQuantity * db.Productoes.Find(productoId).price;
                 db.Entry(compra).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -108,7 +112,11 @@ namespace TiendaVirtual.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (compra.compradoQuantity > db.Productoes.Find(compra.ProductoId).Stock.stockQuantity) {
+                    compra.compradoQuantity = db.Productoes.Find(compra.ProductoId).Stock.stockQuantity;
+                }
                 compra.compradoProductoAmount = compra.compradoQuantity * db.Productoes.Find(compra.ProductoId).price;
+                
                 db.Entry(compra).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
