@@ -21,6 +21,7 @@ namespace TiendaVirtual
     
         public int Id { get; set; }
         public long compradoQuantity { get; set; }
+        public double compradoProductoAmount { get; set; }
         public int ProductoId { get; set; }
     
         public virtual ICollection<Pedido> Pedidoes { get; set; }

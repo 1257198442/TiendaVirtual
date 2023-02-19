@@ -19,5 +19,7 @@ namespace TiendaVirtual
         public double price { get; set; }
         public string description { get; set; }
         public string image { get; set; }
+    
+        public virtual Stock Stock { get; set; }
     }
 }

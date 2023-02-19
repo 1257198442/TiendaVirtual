@@ -9,9 +9,9 @@
         <EntityTypeShape EntityType="TiendaModel.Stock" Width="1.5" PointX="2.875" PointY="1.125" />
         <EntityTypeShape EntityType="TiendaModel.Compra" Width="1.5" PointX="2.875" PointY="3.5" />
         <EntityTypeShape EntityType="TiendaModel.Pedido" Width="1.5" PointX="5.125" PointY="3.5" IsExpanded="true" />
-        <AssociationConnector Association="TiendaModel.StockProducto" />
         <AssociationConnector Association="TiendaModel.CompraPedido" />
         <AssociationConnector Association="TiendaModel.ProductoCompra" />
+        <AssociationConnector Association="TiendaModel.StockProducto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

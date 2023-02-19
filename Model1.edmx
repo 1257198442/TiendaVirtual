@@ -10,17 +10,17 @@
     <EntitySet Name="Stocks" EntityType="TiendaModel.Store.Stocks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Compras" EntityType="TiendaModel.Store.Compras" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Pedidoes" EntityType="TiendaModel.Store.Pedidoes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="CompraProducto" Association="TiendaModel.Store.CompraProducto">
+    <AssociationSet Name="CompraPedido" Association="TiendaModel.Store.CompraPedido">
       <End Role="Compra" EntitySet="Compras" />
+      <End Role="Pedido" EntitySet="Pedidoes" />
+    </AssociationSet>
+    <AssociationSet Name="ProductoCompra" Association="TiendaModel.Store.ProductoCompra">
       <End Role="Producto" EntitySet="Productoes" />
+      <End Role="Compra" EntitySet="Compras" />
     </AssociationSet>
     <AssociationSet Name="StockProducto" Association="TiendaModel.Store.StockProducto">
       <End Role="Stock" EntitySet="Stocks" />
       <End Role="Producto" EntitySet="Productoes" />
-    </AssociationSet>
-    <AssociationSet Name="CompraPedido" Association="TiendaModel.Store.CompraPedido">
-      <End Role="Compra" EntitySet="Compras" />
-      <End Role="Pedido" EntitySet="Pedidoes" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Productoes">
@@ -47,20 +47,33 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="compradoQuantity" Type="bigint" Nullable="false" />
+    <Property Name="compradoProductoAmount" Type="float" Nullable="false" />
     <Property Name="ProductoId" Type="int" Nullable="false" />
-    <Property Name="amount" Type="float" Nullable="false" />
   </EntityType>
   <EntityType Name="Pedidoes">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="amount" Type="nvarchar(max)" Nullable="false" />
     <Property Name="time" Type="datetime" Nullable="false" />
     <Property Name="CompraId" Type="int" Nullable="false" />
   </EntityType>
-  <Association Name="CompraProducto">
-    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="*" />
+  <Association Name="CompraPedido">
+    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="1" />
+    <End Role="Pedido" Type="TiendaModel.Store.Pedidoes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compra">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Pedido">
+        <PropertyRef Name="CompraId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProductoCompra">
     <End Role="Producto" Type="TiendaModel.Store.Productoes" Multiplicity="1" />
+    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Producto">
         <PropertyRef Name="Id" />
@@ -82,18 +95,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="CompraPedido">
-    <End Role="Compra" Type="TiendaModel.Store.Compras" Multiplicity="1" />
-    <End Role="Pedido" Type="TiendaModel.Store.Pedidoes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Compra">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Pedido">
-        <PropertyRef Name="CompraId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -103,17 +104,17 @@
           <EntitySet Name="Stocks" EntityType="TiendaModel.Stock" />
           <EntitySet Name="Compras" EntityType="TiendaModel.Compra" />
           <EntitySet Name="Pedidoes" EntityType="TiendaModel.Pedido" />
-          <AssociationSet Name="StockProducto" Association="TiendaModel.StockProducto">
-            <End Role="Stock" EntitySet="Stocks" />
-            <End Role="Producto" EntitySet="Productoes" />
-          </AssociationSet>
           <AssociationSet Name="CompraPedido" Association="TiendaModel.CompraPedido">
             <End Role="Compra" EntitySet="Compras" />
             <End Role="Pedido" EntitySet="Pedidoes" />
           </AssociationSet>
           <AssociationSet Name="ProductoCompra" Association="TiendaModel.ProductoCompra">
+            <End EntitySet="Productoes" Role="Producto" />
+            <End EntitySet="Compras" Role="Compra" />
+          </AssociationSet>
+          <AssociationSet Name="StockProducto" Association="TiendaModel.StockProducto">
+            <End Role="Stock" EntitySet="Stocks" />
             <End Role="Producto" EntitySet="Productoes" />
-            <End Role="Compra" EntitySet="Compras" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Producto">
@@ -125,6 +126,7 @@
           <Property Name="price" Type="Double" Nullable="false" />
           <Property Name="description" Type="String" Nullable="false" />
           <Property Name="image" Type="String" Nullable="false" />
+          <NavigationProperty Name="Stock" Relationship="TiendaModel.StockProducto" FromRole="Producto" ToRole="Stock" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
@@ -142,6 +144,7 @@
           <Property Name="compradoQuantity" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Pedidoes" Relationship="TiendaModel.CompraPedido" FromRole="Compra" ToRole="Pedido" />
           <NavigationProperty Name="Producto" Relationship="TiendaModel.ProductoCompra" FromRole="Compra" ToRole="Producto" />
+          <Property Name="compradoProductoAmount" Type="Double" Nullable="false" />
           <Property Name="ProductoId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Pedido">
@@ -154,10 +157,6 @@
           <NavigationProperty Name="Compra" Relationship="TiendaModel.CompraPedido" FromRole="Pedido" ToRole="Compra" />
           <Property Name="CompraId" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="StockProducto">
-          <End Type="TiendaModel.Stock" Role="Stock" Multiplicity="1" />
-          <End Type="TiendaModel.Producto" Role="Producto" Multiplicity="1" />
-        </Association>
         <Association Name="CompraPedido">
           <End Type="TiendaModel.Compra" Role="Compra" Multiplicity="1" />
           <End Type="TiendaModel.Pedido" Role="Pedido" Multiplicity="*" />
@@ -171,8 +170,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ProductoCompra">
-          <End Type="TiendaModel.Producto" Role="Producto" Multiplicity="1" />
-          <End Type="TiendaModel.Compra" Role="Compra" Multiplicity="*" />
+          <End Type="TiendaModel.Producto" Multiplicity="1" Role="Producto" />
+          <End Type="TiendaModel.Compra" Multiplicity="*" Role="Compra" />
           <ReferentialConstraint>
             <Principal Role="Producto">
               <PropertyRef Name="Id" />
@@ -181,6 +180,10 @@
               <PropertyRef Name="ProductoId" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <Association Name="StockProducto">
+          <End Type="TiendaModel.Stock" Role="Stock" Multiplicity="1" />
+          <End Type="TiendaModel.Producto" Role="Producto" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -212,6 +215,8 @@
         <MappingFragment StoreEntitySet="Compras">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="compradoQuantity" ColumnName="compradoQuantity" />
+          <ScalarProperty Name="compradoProductoAmount" ColumnName="compradoProductoAmount" />
+          <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -219,7 +224,9 @@
       <EntityTypeMapping TypeName="IsTypeOf(TiendaModel.Pedido)">
         <MappingFragment StoreEntitySet="Pedidoes">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
           <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="CompraId" ColumnName="CompraId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

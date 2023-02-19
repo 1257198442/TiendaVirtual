@@ -1,39 +1,39 @@
-﻿@model IEnumerable<TiendaVirtual.Stock>
+﻿@model IEnumerable<TiendaVirtual.Compra>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Stock</h2>
+<h2>Compra</h2>
 
 <p>
-    <!--Html.ActionLink("Create New", "Create")-->
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.compradoQuantity)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Producto.name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.stockQuantity)
+            @Html.DisplayNameFor(model => model.compradoProductoAmount)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.compradoQuantity)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Producto.name)
         </td>
         <td>
-            @if (item.stockQuantity == 0)
-            {
-                <span style="color: red;">sell out</span>
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.stockQuantity)
-            }
+            @Html.DisplayFor(modelItem => item.compradoProductoAmount)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
@@ -42,5 +42,5 @@
         </td>
     </tr>
 }
-
 </table>
+<p>@Html.ActionLink("Generar Pedido", "Index", "Pedidoes")</p>
