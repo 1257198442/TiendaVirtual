@@ -110,6 +110,7 @@ namespace TiendaVirtual.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Stock stock = db.Stocks.Find(id);
+            db.Productoes.Remove(db.Productoes.Find(stock.Producto.Id));
             db.Stocks.Remove(stock);
             db.SaveChanges();
             return RedirectToAction("Index");
